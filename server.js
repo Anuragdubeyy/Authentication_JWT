@@ -5,8 +5,8 @@ const userRoutes = require('./routes/userRoute');
 const { default: mongoose } = require('mongoose');
 
 dotenv.config();
-const MONGO = "JDiX2UOAymfVfGV9";
 
+const MONGO = process.env.DB_PASSWORD;
 mongoose
   .connect(
     `mongodb+srv://anuragdubey16017:${MONGO}@crm.e6a4o.mongodb.net/CRM`,
