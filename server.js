@@ -10,10 +10,6 @@ const MONGO = process.env.DB_PASSWORD;
 mongoose
   .connect(
     `mongodb+srv://anuragdubey16017:${MONGO}@crm.e6a4o.mongodb.net/CRM`,
-    // {
-    //   serverSelectionTimeoutMS: 5000,
-    //   socketTimeoutMS: 45000, // Increase socket timeout
-    // }
   )
   .then(() => {
     console.log("Connected to MongoDB successfully");
