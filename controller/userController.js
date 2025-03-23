@@ -18,7 +18,7 @@ const getUsers = async (req, res) => {
 // Delete User (Admin Only)
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id); // Use findByIdAndDelete()
+    const user = await User.findByIdAndDelete(req.params.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

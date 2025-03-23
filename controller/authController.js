@@ -21,7 +21,7 @@ const registerAdmin = async (req, res) => {
       dob,
       work,
       mobile,
-      role: 'admin', // Set role to 'admin'
+      role: 'admin',
     });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -44,11 +44,10 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Do not hash the password here
     const user = await User.create({
       name,
       email,
-      password, // Save the plain text password (it will be hashed by the pre('save') hook)
+      password,
       age,
       dob,
       work,
@@ -90,7 +89,6 @@ const loginUser = async (req, res) => {
           expiresIn: '30d',
         });
 
-        // Return user data and success message along with the token
         return res.status(200).json({
           message: 'Login successful',
           token,
