@@ -2,39 +2,39 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
+
+// Register Admin
+const registerAdmin = async (req, res) => {
+  const { name, email, password, age, dob, work, mobile } = req.body;
+
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      age,
+      dob,
+      work,
+      mobile,
+      role: 'admin', // Set role to 'admin'
+    });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '30d',
+    });
+
+    res.status(201).json({ token });
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 // Register User
-// const registerUser = async (req, res) => {
-//   const { name, email, password, age, dob, work, mobile } = req.body;
-
-//   try {
-//     const userExists = await User.findOne({ email });
-//     if (userExists) {
-//       return res.status(400).json({ message: 'User already exists' });
-//     }
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     console.log('Hashed password during registration:', hashedPassword); // Log the hashed password
-
-//     const user = await User.create({
-//       name,
-//       email,
-//       password: hashedPassword,
-//       age,
-//       dob,
-//       work,
-//       mobile,
-//     });
-
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: '30d',
-//     });
-
-//     res.status(201).json({ token });
-//   } catch (err) {
-//     console.error('Registration error:', err);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
 const registerUser = async (req, res) => {
   const { name, email, password, age, dob, work, mobile } = req.body;
 
@@ -53,13 +53,14 @@ const registerUser = async (req, res) => {
       dob,
       work,
       mobile,
+      role:'user'
     });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: '30d',
     });
 
-    res.status(201).json({ token });
+    res.status(201).json({  message: 'Registration successful',token });
   } catch (err) {
     console.error('Registration error:', err);
     res.status(500).json({ message: 'Server error' });
@@ -114,4 +115,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+module.exports = { registerAdmin, registerUser, loginUser };
